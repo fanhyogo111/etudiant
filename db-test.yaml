@@ -1,0 +1,35 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etudiant-db
+spec:
+  selector:
+    matchLabels:
+      app: etudiant-db
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: etudiant-db
+    spec:
+      containers:
+      - name: etudiant-db
+        image: postgres:9.4-alpine
+        ports:
+          - containerPort: 5432
+          - name: etud-db
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: etudiant-db
+spec:
+  selector:
+    app: etudiant-db
+  ports:
+    - name: etudiant-db-port
+      port: 5432
+  type: ClusterIP
